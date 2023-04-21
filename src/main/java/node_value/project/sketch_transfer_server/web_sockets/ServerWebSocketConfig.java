@@ -1,4 +1,4 @@
-package node_value.project.sketch_transfer_server;
+package node_value.project.sketch_transfer_server.web_sockets;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

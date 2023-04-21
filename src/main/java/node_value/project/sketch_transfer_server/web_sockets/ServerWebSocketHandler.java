@@ -1,4 +1,4 @@
-package node_value.project.sketch_transfer_server;
+package node_value.project.sketch_transfer_server.web_sockets;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +10,8 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import org.springframework.web.util.HtmlUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import node_value.project.sketch_transfer_server.dto.MessageDTO;
 
 import java.util.Collections;
 import java.util.List;

@@ -1,4 +1,4 @@
-package node_value.project.sketch_transfer_server;
+package node_value.project.sketch_transfer_server.dto;
 
 
 import lombok.AllArgsConstructor;

@@ -9,5 +9,4 @@ public class SketchTransferServerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SketchTransferServerApplication.class, args);
 	}
-
 }

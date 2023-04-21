@@ -8,10 +8,14 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import org.springframework.web.util.HtmlUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import node_value.project.sketch_transfer_server.dto.MessageDTO;
+import node_value.project.sketch_transfer_server.service.JwtService;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,11 +28,17 @@ public class ServerWebSocketHandler extends TextWebSocketHandler implements SubP
     
     private final ConcurrentHashMap<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
     
+    @Autowired JwtService jwtService;
+
+    private String extractUsername(WebSocketSession session) {
+        return jwtService.extractUsername(session.getHandshakeHeaders().getFirst("cookie").split("=")[1]);
+    }
+
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         logger.info("Server connection opened");
-        
-        sessions.put(session.getHandshakeHeaders().getFirst("cookie").split("=")[1], session);
+        logger.info("Connected user: " + extractUsername(session));
+        //sessions.put(session.getHandshakeHeaders().getFirst("cookie").split("=")[1], session);
         
         TextMessage message = new TextMessage("one-time message from server ");
 

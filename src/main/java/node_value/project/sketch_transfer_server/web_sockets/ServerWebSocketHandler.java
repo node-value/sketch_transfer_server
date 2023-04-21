@@ -9,13 +9,12 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import org.springframework.web.util.HtmlUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import node_value.project.sketch_transfer_server.dto.MessageDTO;
+import node_value.project.sketch_transfer_server.dto.ProjectDataDTO;
 import node_value.project.sketch_transfer_server.service.JwtService;
+import node_value.project.sketch_transfer_server.util.ProjectDataMsgType;
 
 import java.util.Collections;
 import java.util.List;
@@ -38,9 +37,10 @@ public class ServerWebSocketHandler extends TextWebSocketHandler implements SubP
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         logger.info("Server connection opened");
         logger.info("Connected user: " + extractUsername(session));
-        //sessions.put(session.getHandshakeHeaders().getFirst("cookie").split("=")[1], session);
         
-        TextMessage message = new TextMessage("one-time message from server ");
+        sessions.put(extractUsername(session), session);
+        
+        TextMessage message = new TextMessage("User with name \"" + extractUsername(session) + "\" connected to server");
 
         logger.info("Server sends: {}", message);
         session.sendMessage(message);
@@ -49,7 +49,7 @@ public class ServerWebSocketHandler extends TextWebSocketHandler implements SubP
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
         logger.info("Server connection closed: {}", status);
-        sessions.remove(session.getHandshakeHeaders().getFirst("username"));
+        sessions.remove(extractUsername(session));
     }
         
     @Override
@@ -57,16 +57,29 @@ public class ServerWebSocketHandler extends TextWebSocketHandler implements SubP
         String request = message.getPayload();
         logger.info("Server received: {}", request);
         
-        MessageDTO messageDTO = new ObjectMapper().readValue(request, MessageDTO.class);
+        ProjectDataDTO data = new ObjectMapper().readValue(request, ProjectDataDTO.class);
         
-        String response = String.format("Broadcast to all connected clients from server to '%s'", HtmlUtils.htmlEscape(request));
-        logger.info("Server sends: {}", response);
+        //String response = String.format("Broadcast to all connected clients from server to '%s'", HtmlUtils.htmlEscape(request));
+        //logger.info("Server sends: {}", response);
+        if (data.getType() == ProjectDataMsgType.CHECK) {
+            if (sessions.containsKey(data.getReceiver())) {
+                data.setType(ProjectDataMsgType.INITIAL);
+                sessions.get(data.getReceiver()).sendMessage(new TextMessage(new ObjectMapper().writeValueAsString(data)));
 
-        
-        sessions.get(messageDTO.getReceiver()).sendMessage(new TextMessage("Message from user " + messageDTO.getSender() + ": " + messageDTO.getMessage())); // new TextMessage(response);
+                data.setType(ProjectDataMsgType.CHECK);
+                data.setData("OK");
+                session.sendMessage(new TextMessage(new ObjectMapper().writeValueAsString(data)));
+            } else {
+                data.setData("FAILED");
+                session.sendMessage(new TextMessage(new ObjectMapper().writeValueAsString(data)));
+            }
+        }
+
+        //sessions.get(data.getReceiver()).sendMessage(new TextMessage("Message from user " +" messageDTO.getSender()" + ": " + data.getMessage())); // new TextMessage(response);
         
     }
     
+
     @Override
     public void handleTransportError(WebSocketSession session, Throwable exception) {
         logger.info("Server transport error: {}", exception.getMessage());

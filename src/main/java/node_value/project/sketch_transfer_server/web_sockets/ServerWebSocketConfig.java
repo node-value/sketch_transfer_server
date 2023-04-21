@@ -13,7 +13,7 @@ public class ServerWebSocketConfig implements WebSocketConfigurer {
     
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(webSocketHandler(), "/ws_chat");
+        registry.addHandler(webSocketHandler(), "/ws_project");
     }
     
     @Bean

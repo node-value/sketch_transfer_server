@@ -32,8 +32,5 @@ public class UserController {
     @PostMapping("/authenticate")
     public ResponseEntity<AuthResponse> authenticate(@Validated @RequestBody UserDTO userDTO) {
         return ResponseEntity.ok(service.authenticate(userDTO));
-    }
-
-
-    
+    }    
 }

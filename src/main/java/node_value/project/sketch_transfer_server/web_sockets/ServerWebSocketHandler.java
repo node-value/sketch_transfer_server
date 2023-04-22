@@ -35,6 +35,7 @@ public class ServerWebSocketHandler extends TextWebSocketHandler implements SubP
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        super.supportsPartialMessages();
         logger.info("Server connection opened");
         logger.info("Connected user: " + extractUsername(session));
         
@@ -55,25 +56,35 @@ public class ServerWebSocketHandler extends TextWebSocketHandler implements SubP
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String request = message.getPayload();
-        logger.info("Server received: {}", request);
+        logger.info("Server received an incomining message of size " + request.length());
         
         ProjectDataDTO data = new ObjectMapper().readValue(request, ProjectDataDTO.class);
         
-        //String response = String.format("Broadcast to all connected clients from server to '%s'", HtmlUtils.htmlEscape(request));
-        //logger.info("Server sends: {}", response);
-        if (data.getType() == ProjectDataMsgType.CHECK) {
+        if (data.getType() == ProjectDataMsgType.CHECK.ordinal()) {
             if (sessions.containsKey(data.getReceiver())) {
-                data.setType(ProjectDataMsgType.INITIAL);
+                data.setType(ProjectDataMsgType.INITIAL.ordinal());
+                data.setData("GET_INITIAL");
                 sessions.get(data.getReceiver()).sendMessage(new TextMessage(new ObjectMapper().writeValueAsString(data)));
+                logger.info("Server send to {} this message size {}", data.getReceiver(), data.getData().length());
 
-                data.setType(ProjectDataMsgType.CHECK);
+                data.setType(ProjectDataMsgType.CHECK.ordinal());
                 data.setData("OK");
                 session.sendMessage(new TextMessage(new ObjectMapper().writeValueAsString(data)));
+                logger.info("Server send to {} this message size {}", data.getReceiver(), data.getData().length());
             } else {
                 data.setData("FAILED");
                 session.sendMessage(new TextMessage(new ObjectMapper().writeValueAsString(data)));
             }
+        } else if (data.getType() == ProjectDataMsgType.INITIAL.ordinal()) {
+            if (sessions.containsKey(data.getReceiver())) {
+                sessions.get(data.getReceiver()).sendMessage(new TextMessage(request));
+                logger.info("Server received message with initial data");
+                //logger.info("Server sent: {}", request);
+            } else {
+                logger.info(data.getReceiver() + " does not connected to the server");
+            }
         }
+
 
         //sessions.get(data.getReceiver()).sendMessage(new TextMessage("Message from user " +" messageDTO.getSender()" + ": " + data.getMessage())); // new TextMessage(response);
         

@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class AbstractWsHandler extends TextWebSocketHandler implements SubProtocolCapable {
+
     private static final Logger logger = LoggerFactory.getLogger(CheckWSHandler.class);
     
     protected final ConcurrentHashMap<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
@@ -31,11 +32,8 @@ public abstract class AbstractWsHandler extends TextWebSocketHandler implements 
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         super.supportsPartialMessages();
         logger.info("Server connection opened on uri " + session.getUri().getPath()); 
-        logger.info("Connected user: " + extractUsername(session));
         sessions.put(extractUsername(session), session);
-        TextMessage message = new TextMessage("User with name \"" + extractUsername(session) + "\" connected to server");
-        logger.info("Server sends: {}", message);
-        session.sendMessage(message);
+        session.sendMessage(new TextMessage("User with name \"" + extractUsername(session) + "\" connected to server"));
     }
     
     @Override

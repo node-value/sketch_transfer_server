@@ -8,7 +8,6 @@ import lombok.NonNull;
 
 @Data @AllArgsConstructor @NoArgsConstructor
 public class ProjectDataDTO {
-    @NonNull Integer type;
     @NonNull String sender, receiver, data;
     
 }

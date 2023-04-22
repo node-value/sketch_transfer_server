@@ -10,23 +10,23 @@ import org.springframework.web.socket.server.standard.ServletServerContainerFact
 
 import node_value.project.sketch_transfer_server.web_sockets.handlers.*;
 
-@Configuration
-@EnableWebSocket
+@Configuration @EnableWebSocket
 public class ServerWebSocketConfig implements WebSocketConfigurer {
     
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(CheckWSHandler(),   "/ws_project/check")
-                .addHandler(InitialWSHandler(), "/ws_project/initial");
+        registry.addHandler(CheckWSHandler(),   "/ws_project/check"  )
+                .addHandler(InitialWSHandler(), "/ws_project/initial")
+                .addHandler(DeleteWSHandler(),  "/ws_project/delete" );
     }
     
     @Bean WebSocketHandler CheckWSHandler()   { return new CheckWSHandler  (); }
     @Bean WebSocketHandler InitialWSHandler() { return new InitialWSHandler(); }
+    @Bean WebSocketHandler DeleteWSHandler()  { return new DeleteWSHandler (); }
 
     @Bean ServletServerContainerFactoryBean createServletServerContainerFactoryBean() {
         ServletServerContainerFactoryBean container = new ServletServerContainerFactoryBean();
         container.setMaxTextMessageBufferSize(1024*1024*32);
-        //container.setMaxBinaryMessageBufferSize(1024*1024*30);
         return container;
     }
 }

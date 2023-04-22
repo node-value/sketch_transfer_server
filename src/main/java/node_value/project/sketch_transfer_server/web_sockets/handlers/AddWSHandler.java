@@ -9,10 +9,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import node_value.project.sketch_transfer_server.dto.ProjectDataDTO;
 
-public class DeleteWSHandler extends AbstractWsHandler {
+public class AddWSHandler extends AbstractWsHandler {
     
-    private static final Logger logger = LoggerFactory.getLogger(DeleteWSHandler.class);
-
+    private static final Logger logger = LoggerFactory.getLogger(AddWSHandler.class);
+    
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String request = message.getPayload();
@@ -20,6 +20,7 @@ public class DeleteWSHandler extends AbstractWsHandler {
         
         ProjectDataDTO data = new ObjectMapper().readValue(request, ProjectDataDTO.class);
         
+
         if (sessions.containsKey(data.getReceiver())) {
             sessions.get(data.getReceiver()).sendMessage(new TextMessage(new ObjectMapper().writeValueAsString(data)));
             logger.info("Server send to {} this message size {}", data.getReceiver(), data.getData().length());

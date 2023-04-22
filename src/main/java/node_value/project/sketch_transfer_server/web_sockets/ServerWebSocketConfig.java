@@ -17,12 +17,16 @@ public class ServerWebSocketConfig implements WebSocketConfigurer {
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(CheckWSHandler(),   "/ws_project/check"  )
                 .addHandler(InitialWSHandler(), "/ws_project/initial")
-                .addHandler(DeleteWSHandler(),  "/ws_project/delete" );
+                .addHandler(DeleteWSHandler(),  "/ws_project/delete" )
+                .addHandler(AddWSHandler(),     "/ws_project/add"    )
+                .addHandler(MoveWSHandler(),    "/ws_project/move"   );
     }
     
     @Bean WebSocketHandler CheckWSHandler()   { return new CheckWSHandler  (); }
     @Bean WebSocketHandler InitialWSHandler() { return new InitialWSHandler(); }
     @Bean WebSocketHandler DeleteWSHandler()  { return new DeleteWSHandler (); }
+    @Bean WebSocketHandler AddWSHandler()     { return new AddWSHandler    (); }
+    @Bean WebSocketHandler MoveWSHandler()    { return new MoveWSHandler   (); }
 
     @Bean ServletServerContainerFactoryBean createServletServerContainerFactoryBean() {
         ServletServerContainerFactoryBean container = new ServletServerContainerFactoryBean();

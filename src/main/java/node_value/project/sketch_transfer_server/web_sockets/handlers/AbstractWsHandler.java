@@ -9,9 +9,6 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import node_value.project.sketch_transfer_server.dto.ProjectDataDTO;
 import node_value.project.sketch_transfer_server.service.JwtService;
 
 import java.util.Collections;

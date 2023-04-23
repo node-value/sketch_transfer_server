@@ -17,8 +17,11 @@ Once you have both the client and server-side apps up and running, you'll be abl
 - Open a terminal and navigate to the root directory of the project.
 - Build the project by running the following command: `mvn clean install`.
 - After the build is complete, navigate to the target folder that was created in the root directory.
+- Open `src/main/resources/application.properties and paste your PostgreSQL credentials.
 - Start the server by running the following command: `java -jar sketch-transfer-server-<version>.jar`
 -The server should now be running on `http://localhost:8080`.
+
+**Update: The app can now be tested without a local server. To try it out, just install the client app and give it a go**
 
 ## Note for Challange Reviwers
 The security, authorization, and data management code of this app were adapted from my previous study project: [web_lab_4](https://github.com/node-value/web-lab4-back)

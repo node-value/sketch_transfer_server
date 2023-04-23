@@ -10,7 +10,7 @@ To use this app, you'll need to have a compatible client-side app installed. You
 
 Once you have both the client and server-side apps up and running, you'll be able to collaborate with others on sketches in real-time. Happy sketching!
 
-**Note: For now colaboration works only if server runs locally.**
+**Note: Collaboration now avaliable without locally installed server, but the connection is unstable, and lasts for not too long.**
 
 ## Build
 - Clone the repository to your local machine using `git clone <repo url>`.

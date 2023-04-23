@@ -11,16 +11,14 @@ public class CheckWSHandler extends AbstractWsHandler {
         
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        String request = message.getPayload();
+        ObjectMapper mapper = new ObjectMapper();       
+        ProjectDataDTO data = mapper.readValue(message.getPayload(), ProjectDataDTO.class);
         
-        ProjectDataDTO data = new ObjectMapper().readValue(request, ProjectDataDTO.class);
-        
-      
         if (sessions.containsKey(data.getReceiver())) {
-            sessions.get(data.getReceiver()).sendMessage(new TextMessage(new ObjectMapper().writeValueAsString(data)));
+            sessions.get(data.getReceiver()).sendMessage(new TextMessage(mapper.writeValueAsString(data)));
         } else {
             data.setData("FAILED");
-            session.sendMessage(new TextMessage(new ObjectMapper().writeValueAsString(data)));
+            session.sendMessage(new TextMessage(mapper.writeValueAsString(data)));
         }
     }
 }

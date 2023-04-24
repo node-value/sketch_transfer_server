@@ -1,9 +1,12 @@
 package node_value.project.sketch_transfer_server.web_sockets.handlers;
 
+import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.socket.CloseStatus;
+import org.springframework.web.socket.PingMessage;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -27,6 +30,16 @@ public class InitialWSHandler extends AbstractWsHandler {
         } else {
             data.setData("FAILED");
             session.sendMessage(new TextMessage(mapper.writeValueAsString(data)));
+        }
+    }
+
+    @Scheduled(fixedRate = 10000)
+    void sendPeriodicMessages() throws IOException {
+        for (WebSocketSession session : sessions.values()) {
+            if (session.isOpen()) {
+                logger.info("Server sends ping.");
+                session.sendMessage(new PingMessage());
+            }
         }
     }
 

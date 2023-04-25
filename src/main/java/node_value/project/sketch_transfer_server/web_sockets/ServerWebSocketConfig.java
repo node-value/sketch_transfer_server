@@ -19,7 +19,8 @@ public class ServerWebSocketConfig implements WebSocketConfigurer {
                 .addHandler(InitialWSHandler(), "/ws_project/initial")
                 .addHandler(DeleteWSHandler(),  "/ws_project/delete" )
                 .addHandler(AddWSHandler(),     "/ws_project/add"    )
-                .addHandler(MoveWSHandler(),    "/ws_project/move"   );
+                .addHandler(MoveWSHandler(),    "/ws_project/move"   )
+                .addHandler(ChatWSHandler(),    "/ws_project/chat"   );
     }
     
     @Bean WebSocketHandler CheckWSHandler()   { return new CheckWSHandler  (); }
@@ -27,6 +28,7 @@ public class ServerWebSocketConfig implements WebSocketConfigurer {
     @Bean WebSocketHandler DeleteWSHandler()  { return new DeleteWSHandler (); }
     @Bean WebSocketHandler AddWSHandler()     { return new AddWSHandler    (); }
     @Bean WebSocketHandler MoveWSHandler()    { return new MoveWSHandler   (); }
+    @Bean WebSocketHandler ChatWSHandler()    { return new ChatWSHandler   (); }
 
     @Bean ServletServerContainerFactoryBean createServletServerContainerFactoryBean() {
         ServletServerContainerFactoryBean container = new ServletServerContainerFactoryBean();

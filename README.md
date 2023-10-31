@@ -10,7 +10,7 @@ To use this app, you'll need to have a compatible client-side app installed. You
 
 Once you have both the client and server-side apps up and running, you'll be able to collaborate with others on sketches in real-time. Happy sketching!
 
-**Note: Collaboration now avaliable without locally installed server, but the connection is unstable, and lasts for not too long.**
+**Note: Collaboration now avaliable without locally installed server**
 
 ## Build
 - Clone the repository to your local machine using `git clone <repo url>`.
@@ -22,6 +22,3 @@ Once you have both the client and server-side apps up and running, you'll be abl
 -The server should now be running on `http://localhost:8080`.
 
 **Update: The app can now be tested without a local server. To try it out, just install the client app and give it a go**
-
-## Note for Challange Reviwers
-The security, authorization, and data management code of this app were adapted from my previous study project: [web_lab_4](https://github.com/node-value/web-lab4-back)

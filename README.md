@@ -8,10 +8,6 @@ The app also incorporates a JWT token authorization system for secure user authe
 
 To use this app, you'll need to have a compatible client-side app installed. You can find the client-side code for the [Sketch Transfer app](https://github.com/node-value/sketch_transfer).
 
-Once you have both the client and server-side apps up and running, you'll be able to collaborate with others on sketches in real-time. Happy sketching!
-
-**Note: Collaboration now avaliable without locally installed server**
-
 ## Build
 - Clone the repository to your local machine using `git clone <repo url>`.
 - Open a terminal and navigate to the root directory of the project.
@@ -19,6 +15,4 @@ Once you have both the client and server-side apps up and running, you'll be abl
 - After the build is complete, navigate to the target folder that was created in the root directory.
 - Open `src/main/resources/application.properties and paste your PostgreSQL credentials.
 - Start the server by running the following command: `java -jar sketch-transfer-server-<version>.jar`
--The server should now be running on `http://localhost:8080`.
-
-**Update: The app can now be tested without a local server. To try it out, just install the client app and give it a go**
+-The server should now be running on `http://localhost:8080`
